@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Giải Võ Thuật</title>
+
+<link rel="manifest" href="manifest.json">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="apple-touch-icon" href="icon.png">
+
+<style>
+body {
+  margin:0;
+  background:#000;
+  color:#fff;
+  font-family:Arial;
+  text-align:center;
+}
+
+header {
+  background:linear-gradient(90deg,gold,orange);
+  color:black;
+  padding:10px;
+  font-size:20px;
+}
+
+.container {
+  display:flex;
+  justify-content:space-around;
+  margin-top:20px;
+}
+
+.fighter {
+  width:40%;
+  padding:20px;
+  border-radius:10px;
+}
+
+.red { background:#800; }
+.blue { background:#004; }
+
+.score { font-size:60px; }
+
+button {
+  padding:10px;
+  margin:5px;
+}
+
+.timer { font-size:35px; }
+</style>
+</head>
+
+<body>
+
+<header>🏆 GIẢI VÕ THUẬT</header>
+
+<input id="rName" placeholder="VĐV Đỏ">
+<input id="bName" placeholder="VĐV Xanh">
+
+<div class="container">
+  <div class="fighter red">
+    <div class="score" id="rScore">0</div>
+    <button onclick="add('r')">+1</button>
+  </div>
+
+  <div class="fighter blue">
+    <div class="score" id="bScore">0</div>
+    <button onclick="add('b')">+1</button>
+  </div>
+</div>
+
+<div class="timer" id="timer">02:00</div>
+
+<button onclick="start()">▶ Start</button>
+<button onclick="reset()">🔄 Reset</button>
+
+<h2 id="winner"></h2>
+
+<script>
+let r=0,b=0,time=120,interval;
+
+function add(side){
+  if(side==='r'){ r++; rScore.innerText=r;}
+  else{ b++; bScore.innerText=b;}
+}
+
+function start(){
+  clearInterval(interval);
+  interval=setInterval(()=>{
+    if(time<=0){
+      clearInterval(interval);
+      showWinner();
+      return;
+    }
+    time--;
+    let m=Math.floor(time/60);
+    let s=time%60;
+    timer.innerText=(m<10?'0':'')+m+":"+(s<10?'0':'')+s;
+  },1000);
+}
+
+function showWinner(){
+  let rn=rName.value||"Đỏ";
+  let bn=bName.value||"Xanh";
+
+  if(r>b) winner.innerText="🏆 "+rn+" THẮNG";
+  else if(b>r) winner.innerText="🏆 "+bn+" THẮNG";
+  else winner.innerText="⚖️ HOÀ";
+}
+
+function reset(){
+  r=0;b=0;time=120;
+  rScore.innerText=0;
+  bScore.innerText=0;
+  timer.innerText="02:00";
+  winner.innerText="";
+}
+
+// PWA
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js');
+}
+</script>
+
+</body>
+</html>

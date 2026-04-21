@@ -1,0 +1,8 @@
+{
+  "name": "Vo Thuat App",
+  "short_name": "VoThuat",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#000",
+  "theme_color": "#FFD700"
+}
